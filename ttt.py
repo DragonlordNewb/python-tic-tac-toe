@@ -53,7 +53,7 @@ class TicTacToeBoard:
     def hasOWon(self):
         return winCondition(self.rows, 2)
         
-class TicTacToeGame(TicTacToeBoard):
+class MultiplayerGame(TicTacToeBoard):
     def __init__(self):
         TicTacToeBoard.__init__(self)
         self.winner = 0
@@ -99,6 +99,8 @@ class TicTacToeGame(TicTacToeBoard):
             clearScreen()
             print("game reached a theoretically unreachable state. sorry!")
         print(translator[self.turn] + " won")
+		self.winner = self.turn
+		return self.winner
 
 if __name__ == "__main__":
-    TicTacToeGame().startGame(debug=DEBUG)
+	MultiplayerGame().startGame(debug=DEBUG)
