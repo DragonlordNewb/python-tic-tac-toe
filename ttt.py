@@ -33,12 +33,18 @@ class TicTacToeBoard:
         return self.rows[row]
         
     def setVal(self, row, column, value):
+        if self[row][column] != 0:
+            raise SyntaxError("Space already taken.")
         self[row][column] = value
         
     def setX(self, row, column):
+        if self[row][column] != 0:
+            raise SyntaxError("Space already taken.")
         self[row][column] = 1
         
     def setO(self, row, column):
+        if self[row][column] != 0:
+            raise SyntaxError("Space already taken.")
         self[row][column] = 2
         
     def hasXWon(self):
@@ -78,8 +84,20 @@ class TicTacToeGame(TicTacToeBoard):
                 
             except IndexError:
                 input("error: invalid row/column number. (<Enter> to continue)")
+            
+            except SyntaxError:
+                input("error: spot already taken. (<Enter> to continue)")
 
         clearScreen()
+        if self.turn == 1:
+            if debug: input("turn was 1, setting to 2")
+            self.turn = 2
+        elif self.turn == 2:
+            if debug: input("turn was 2, setting to 1")
+            self.turn = 1
+        else:
+            clearScreen()
+            print("game reached a theoretically unreachable state. sorry!")
         print(translator[self.turn] + " won")
 
 if __name__ == "__main__":
