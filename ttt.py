@@ -53,18 +53,63 @@ class TicTacToeBoard:
     def hasOWon(self):
         return winCondition(self.rows, 2)
         
-class MultiplayerGame(TicTacToeBoard):
-    def __init__(self):
+class Game(TicTacToeBoard):
+	def __init__(self):
         TicTacToeBoard.__init__(self)
         self.winner = 0
         self.turn = 0
-        
+		
+class MultiplayerGame(Game):
     def startGame(self, startingPlayer=1, debug=False):
         self.turn = startingPlayer
         
         while not self.hasXWon() or self.hasOWon():
             clearScreen()
             print(translator[self.turn] + "\'s turn (value: " + str(self.turn) + ")")
+            print(str(self))
+            try:
+                r = int(input("row: ")) -1
+                c = int(input("col: ")) -1
+                self.setVal(r, c, self.turn)
+                if self.turn == 1:
+                    if debug: input("turn was 1, setting to 2")
+                    self.turn = 2
+                elif self.turn == 2:
+                    if debug: input("turn was 2, setting to 1")
+                    self.turn = 1
+                else:
+                    clearScreen()
+                    print("game reached a theoretically unreachable state. sorry!")
+            except ValueError:
+                input("error: invalid row/column input. (<Enter> to continue)")
+                
+            except IndexError:
+                input("error: invalid row/column number. (<Enter> to continue)")
+            
+            except SyntaxError:
+                input("error: spot already taken. (<Enter> to continue)")
+
+        clearScreen()
+        if self.turn == 1:
+            if debug: input("turn was 1, setting to 2")
+            self.turn = 2
+        elif self.turn == 2:
+            if debug: input("turn was 2, setting to 1")
+            self.turn = 1
+        else:
+            clearScreen()
+            print("game reached a theoretically unreachable state. sorry!")
+        print(translator[self.turn] + " won")
+		self.winner = self.turn
+		return self.winner
+	
+class AIGame:
+	def startGame(self, startingPlayer=1, debug=False):
+        self.turn = startingPlayer
+        
+        while not self.hasXWon() or self.hasOWon():
+            clearScreen()
+            print("human\'s turn (value: " + str(self.turn) + ")")
             print(str(self))
             try:
                 r = int(input("row: ")) -1
